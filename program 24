@@ -1,0 +1,29 @@
+def gcd_extended(a, b):
+    if a == 0:
+        return b, 0, 1
+    gcd, x1, y1 = gcd_extended(b % a, a)
+    x = y1 - (b // a) * x1
+    y = x1
+    return gcd, x, y
+
+def mod_inverse(e, phi):
+    gcd, x, _ = gcd_extended(e, phi)
+    if gcd != 1:
+        return None
+    else:
+        return x % phi
+
+def find_p_q(n):
+    for p in range(2, int(n**0.5) + 1):
+        if n % p == 0:
+            q = n // p
+            return p, q
+    return None, None
+
+n = 3599
+e = 31
+p, q = find_p_q(n)
+phi = (p - 1) * (q - 1)
+d = mod_inverse(e, phi)
+
+print("Private key (d):", d)
